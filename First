@@ -1,0 +1,9 @@
+public enum ItemCraftButtons     
+    {
+        Helm,
+        Armor,
+        Legs,
+        Ring,
+        Neck,
+        Weapon,
+    }
