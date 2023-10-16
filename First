@@ -7,3 +7,198 @@ public enum ItemCraftButtons
         Neck,
         Weapon,
     }
+public class ItemManager : MonoBehaviour
+{
+    [SerializeField]
+    public float weightWhite = 100f;
+    [SerializeField]
+    public float weightBlue = 80f;
+    [SerializeField]
+    public float weightPurple = 50f;
+    [SerializeField]
+    public float weightRed = 20f;
+    [SerializeField]
+    public float weightYellow = 1f;
+
+    [Header("Prices")]
+    [SerializeField]
+    private float _moneyAmount = 1000f;  // Временный пункт, потом уйдет в базу и будет подтягиваться оттуда
+    [SerializeField]
+    public float helmPrice = 100f;
+    [SerializeField]
+    public float armorPrice = 100f;
+    [SerializeField]
+    public float neckPrice = 100f;
+    [SerializeField]
+    public float ringPrice = 100f;
+    [SerializeField]
+    public float legsPrice = 100f;
+    [SerializeField]
+    public float weaponPrice = 100f;
+
+
+public ItemCraftButtons  SetActiveButton( ItemCraftButtons activeButton)
+    {
+       _activeButtons = activeButton;
+       Debug.Log(_activeButtons + "wololo");
+        CheckPrice(_activeButtons);
+       //GenerateCurrentItem(_activeButtons);
+       return _activeButtons;
+    }
+
+    private void CheckPrice(ItemCraftButtons _activeButton) 
+    {
+        string name = _activeButton.ToString();
+        switch (name)
+        {
+
+            case "Helm":
+                if (_moneyAmount > helmPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - helmPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                
+                break;
+            case "Armor":
+                if (_moneyAmount > armorPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - armorPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                break;
+
+            case "Legs":
+
+                if (_moneyAmount > legsPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - legsPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                break;
+
+            case "Ring":
+                if (_moneyAmount > ringPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - ringPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                break;
+
+            case "Neck":
+                if (_moneyAmount >neckPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - neckPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                break;
+
+            case "Weapon":
+                if (_moneyAmount > weaponPrice)    // вводим цену.
+                {
+                    GenerateCurrentItem(_activeButtons);
+                    _moneyAmount = _moneyAmount - weaponPrice;
+                }
+                else
+                    Debug.Log("Недостаточно денег для оплаты работы кузнеца");
+                break;
+
+            default:
+                Debug.LogWarning("Cant find item name! Script ForgeItems");
+                break;
+        }
+    }
+    /*Создаем нужный Item в кузнице */
+    private void GenerateCurrentItem( ItemCraftButtons _activeButton)
+    {
+
+        
+
+        GenerateItem((ItemParts)_activeButton, ChooseGradeRate(), 1, "test_item", "test_naming", "test_stats", "test_skills"); 
+        string name = _activeButton.ToString();
+        switch (name)
+        {
+
+             case "Helm":
+                _helms.Add(gameObject);
+                Debug.Log("added");
+                Debug.Log(_helms.Count + " счет");
+                break;
+
+            case "Armor":
+                _armors.Add(gameObject);
+                break;
+
+            case "Legs":
+                _legs.Add(gameObject);
+                break;
+
+            case "Ring":
+                _rings.Add(gameObject);
+                break;
+
+            case "Neck":
+                _necks.Add(gameObject);
+                break;
+                
+            case "Weapon":
+                _weapons.Add(gameObject);
+                break;
+
+
+            default:
+                Debug.LogWarning("Cant find item name! Script ForgeItems");
+                break;
+            }
+    }
+
+    private void GenerateItem(ItemParts itemPart, ItemGrade itemGrade, int itemLvl, string id, string naming_set, string stats_set, string skills_set)
+    {
+    }
+public ItemGrade ChooseGradeRate()
+    {
+        float itemGradePoint = Random.Range(0f,1f);
+         gradeIndex = 0;
+        
+        float _currentChanceWhite = (weightWhite / (weightWhite + weightBlue + weightPurple + weightRed + weightYellow)) ;
+        float _currentChanceBlue = (weightBlue / (weightWhite + weightBlue + weightPurple + weightRed + weightYellow)) ;
+        float _currentChancePurple = (weightPurple / (weightWhite + weightBlue + weightPurple + weightRed + weightYellow)) ;
+        float _currentChanceRed = (weightRed / (weightWhite + weightBlue + weightPurple + weightRed + weightYellow)) ;
+        float _currentChanceYellow = (weightYellow / (weightWhite + weightBlue + weightPurple + weightRed + weightYellow)) ;
+        
+
+        if(itemGradePoint < _currentChanceRed)
+        {
+             gradeIndex =ItemGrade.Yellow; 
+        }
+        else if (itemGradePoint <= _currentChancePurple && itemGradePoint > _currentChanceRed)
+        {
+         gradeIndex =ItemGrade.Red; 
+        }
+        else if (itemGradePoint <= _currentChanceBlue && itemGradePoint > _currentChancePurple)
+        {
+         gradeIndex =ItemGrade.Purple; 
+        }
+        else if (itemGradePoint <= _currentChanceWhite && itemGradePoint > _currentChanceBlue)
+        {
+         gradeIndex =ItemGrade.Blue; 
+        }
+        else if (itemGradePoint > _currentChanceWhite)
+        {
+         gradeIndex =ItemGrade.White;
+        }
+        Debug.Log(gradeIndex + "itemgrade");
+       
+        return gradeIndex;
+    }
+}
