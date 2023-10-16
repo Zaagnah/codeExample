@@ -1,0 +1,96 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ForgeItems : MonoBehaviour
+{
+    
+
+    //public Item _itemType;
+    private ItemManager _itemManager;
+    private static ItemCraftButtons _index;
+
+    
+
+
+   
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _itemManager = GameObject.FindGameObjectWithTag("ItemManager").GetComponentInChildren<ItemManager>();
+        SetIndexButton();
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Debug.Log(_index);
+    }
+    /*public void GenerateChtoto()
+    {
+        _itemManager.GenerateItem(ItemParts.Armor, ItemGrade.White, 0, "test_item", "test_naming", "test_stats", "test_skills");
+     
+
+    }*/
+    public void UpdateItem()
+    {
+        Debug.Log("Update item here");
+    }
+    /* здесь мы должны получать индекс типа итема и передавать его в itemManager для создания предметов. 
+     */
+    public void SetIndexButton()
+    {
+        string name = gameObject.name;
+        Debug.Log(name);
+
+        switch (name)
+        {
+
+             case "Helm":
+                _index = ItemCraftButtons.Helm;
+                break;
+   
+            case "Armor":
+                _index = ItemCraftButtons.Armor;
+                break;
+
+            case "Legs":
+                _index = ItemCraftButtons.Legs;
+                break;
+
+            case "Ring":
+                _index = ItemCraftButtons.Ring;
+                break;
+
+            case "Neck":
+                _index = ItemCraftButtons.Neck;
+                break;
+            case "Weapon":
+                _index = ItemCraftButtons.Weapon;
+                Debug.Log("we");
+                break;
+
+
+            default:
+                Debug.LogWarning("Cant find item name! Script ForgeItems");
+                break;
+            
+        }
+
+        
+    }
+
+    
+
+        public void CreateItemForge()
+        {
+          
+         _itemManager.SetActiveButton(_index);
+         //Debug.Log("BttnName = " + name);
+         Debug.Log("BttnIndex = " + _index);
+        }
+       
+}
+
